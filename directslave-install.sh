@@ -5,7 +5,7 @@
 # @version 1.0.5
 # @source 
 # ------------------------------------------------------------------------------
-sshport=22;
+sshport=2274;
 #Check that user is root.
 if [ “$(id -u)” = “0” ]; then
 printf "Bingo! you are root. Continue on....\n"
@@ -16,10 +16,10 @@ fi
 #What Distro are you on?
 printf "Distro are you on??\n" 2>&1
 OS='cat /etc/redhat-release | awk {'print $1}'
-if [ "$OS" = "CentOS" ]; then
-echo "System runs on CentOS 7.X. Checking Continue on....";
-VN='cat /etc/redhat-release | awk {'print $3}'
-else [ "$VN" != "7.*" ]; elseif
+if [ "$OS" = "Rocky" ]; then
+echo "System runs on Rocky Linux 8.X. Checking Continue on...";
+VN='cat /etc/redhat-release | awk {'print $4}'
+else [ "$VN" != "8.*" ]; elseif
 echo "Installation failed. System runs on unsupported Linux. Exiting...";
 exit;
 fi 
@@ -40,7 +40,7 @@ echo "Saving most outputs to /root/install.log";
 echo "doing updates and installs"
 yum update -y > /root/install.log
 yum install epel-release -y >> /root/install.log
-yum install bind bind-utils wget -y >> /root/install.log
+yum install bind bind-utils wget htop iftop nano -y >> /root/install.log
 
 systemctl start named >> /root/install.log
 systemctl stop named >> /root/install.log
