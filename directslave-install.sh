@@ -62,14 +62,14 @@ systemctl restart sshd  >> /root/install.log
 
 echo "installing and configuring directslave"
 cd ~
-wget -q https://directslave.com/download/directslave-3.4.2-advanced-all.tar.gz >> /root/install.log
-tar -xf directslave-3.4.2-advanced-all.tar.gz
+wget -q https://directslave.com/download/directslave-3.4.3-advanced-all.tar.gz >> /root/install.log
+tar -xf directslave-3.4.3-advanced-all.tar.gz
 mv directslave /usr/local/
 cd /usr/local/directslave/bin
 mv directslave-linux-amd64 directslave
-cd /usr/local/directslave/
-wget -q https://directslave.com/download/directslave-3.2-login-XSS-HOTFIX.tar.gz
-tar -xf directslave-3.2-login-XSS-HOTFIX.tar.gz
+# cd /usr/local/directslave/
+# wget -q https://directslave.com/download/directslave-3.2-login-XSS-HOTFIX.tar.gz
+# tar -xf directslave-3.2-login-XSS-HOTFIX.tar.gz
 cd /usr/local/directslave
 chown named:named -R /usr/local/directslave
 
@@ -77,7 +77,7 @@ curip="$( hostname -I|awk '{print $1}' )"
 cat > /usr/local/directslave/etc/directslave.conf <<EOF
 background	1
 host            $curip
-port            2222
+port            4242
 ssl             off
 cookie_sess_id  DS_SESSID
 cookie_auth_key Change_this_line_to_something_long_&_secure
@@ -196,7 +196,7 @@ yum install firewalld -y >> /root/install.log
 systemctl start firewalld >> /root/install.log
 systemctl enable firewalld >> /root/install.log
 firewall-cmd --permanent --add-service=dns
-firewall-cmd --permanent --add-port=2222/tcp
+firewall-cmd --permanent --add-port=4242/tcp
 firewall-cmd --permanent --add-port=53/tcp
 firewall-cmd --permanent --add-port=443/tcp
 firewall-cmd --reload
@@ -207,6 +207,6 @@ echo "Checking DirectSlave and starting"
 /usr/local/directslave/bin/directslave --run
 
 echo "all done!"
-echo "Open the DirectSlave Dashboard using a web browser http://your-ip-address:2222"
+echo "Open the DirectSlave Dashboard using a web browser http://your-ip-address:4242"
 echo "if failed browse using IP address, edit /usr/local/directslave/etc/directslave.conf and change the host 127.0.0.1 to your current IP address"
 exit 0;
